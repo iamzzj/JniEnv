@@ -9,4 +9,6 @@
 /Users/z/CLionProjects/JniEnv/main.c
 stdio.h
 -
+string.h
+-
 

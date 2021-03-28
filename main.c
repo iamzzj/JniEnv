@@ -1,55 +1,47 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-typedef struct JNINativeInterface *JNIEnv;
+typedef struct {
+    int width;
+    int height;
+    int format;
+} AndroidBitmapInfo;
 
-struct JNINativeInterface {
-    char *(*NewStringUTF)(JNIEnv *, char *)
-};
-
-char *NewStringUTF(JNIEnv *env, char *str) {
-    // str -> jstring
-    return str;
+int getAndroidBitmapInfo(AndroidBitmapInfo *androidBitmapInfo) {
+    if (androidBitmapInfo == NULL) {
+        return -1;
+    }
+    androidBitmapInfo->width = 100;
+    androidBitmapInfo->height = 200;
 }
 
-char *Java_com_java_simple_getSingnature(JNIEnv *env, char *str) {
-    return (*env)->NewStringUTF(env, str);
-}
-
+/**
+ * 设计一个C项目
+ * 1.确定你的参数，传递指针
+ * 2.一定要考虑健壮性
+ * 3.对错误进行抛出说明
+ * 4.不要轻易的去改变创建者给你的指针
+ *
+ * @return
+ */
 int main() {
-    struct JNINativeInterface jniNativeInterface;
-    jniNativeInterface.NewStringUTF = NewStringUTF;
+    AndroidBitmapInfo *androidBitmapInfo = malloc(sizeof(AndroidBitmapInfo));
 
-    JNIEnv env = &jniNativeInterface;
-    JNIEnv *jniEnv = &env;
+    if (androidBitmapInfo != NULL) {
+        free(androidBitmapInfo);
+        androidBitmapInfo = NULL;
+    }
 
-    char *jstring = Java_com_java_simple_getSingnature(jniEnv, "hello");
+    int ret = getAndroidBitmapInfo(androidBitmapInfo);
 
-    printf("%s", jstring);
+    if (ret != 0) {
+        return -1;
+    }
 
-    /*//获取jclass
-    jclass j_class = env->GetObjectClass(j_object);
-
-    //GetFieldID(jclass clazz, const char* name, const char* sig)
-    //sig属性的签名
-    jfieldID j_fieldId = env->GetFieldID(j_class, "name", "Ljava/lang/String");
-    env->GetStaticFieldID //静态
-
-    //获取name属性的fild
-    jstring
-    j_string = (jstring)
-    env->GetObjectField(j_object, j_fieldId);
-    env->GetStaticObjectField(j_object, j_fieldId);//静态
-
-     //获取方法
-     env->CallVoidMethod()
-
-    //打印字符串 jstring -> c str
-    const char *c_str = env->GetStringUTFChars(j_string, NULL);
-    printf("name: %s", c_str);
-
-    //修改成jack
-    jstring jackName = env->NewStringUTF("Jack");
-    env->SetObjectField(j_object, j_fieldId, jackName);*/
+    printf("width: %d,height: %d\n",
+           androidBitmapInfo->width,
+           androidBitmapInfo->height);
 
     return 0;
 }
