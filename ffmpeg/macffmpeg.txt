@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.17)
+project(FFmpeg C)
+
+set(CMAKE_C_STANDARD 11)
+
+include_directories(/usr/local/ffmpeg/include)
+
+link_directories(/usr/local/ffmpeg/lib)
+
+link_libraries (
+        avcodec
+        avdevice
+        avfilter
+        avformat
+        avutil
+        postproc
+        swresample
+        swscale
+)
+
+add_executable(FFmpeg main.c extra_audio.c)

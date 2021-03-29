@@ -1,0 +1,34 @@
+1.clion目录下创建lib,include文件夹
+2.lib下放入win32-shared的dll，include放入win64-include
+3.run-edit configurations里working direcory放入win-32解压bin
+4.environment variables里放入PATH=D:\CApplication\TestClion\lib
+
+
+cmake_minimum_required(VERSION 3.17)
+project(TestClion C)
+
+set(CMAKE_C_STANDARD 11)
+
+# FFmpeg 根目录
+set(FFMPEG_LIBS_DIR D:/ffmpeg)
+
+# 头文件
+include_directories(include)
+link_directories(lib)
+
+add_executable(
+        TestClion
+        main.c
+)
+
+target_link_libraries(
+        TestClion
+        avutil.dll
+        avcodec.dll
+        avformat.dll
+        avfilter.dll
+        avdevice.dll
+        swscale.dll
+        swresample.dll
+        postproc.dll
+)
